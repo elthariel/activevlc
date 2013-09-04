@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'activevlc'
+require 'activevlc/cli'
+
+ActiveVlc::Cli.start

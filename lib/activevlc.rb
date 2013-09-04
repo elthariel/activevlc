@@ -1,5 +1,6 @@
+require 'active_support'
 require "activevlc/version"
+require "activevlc/dsl"
 
-module Activevlc
-  # Your code goes here...
+module ActiveVlc
 end
