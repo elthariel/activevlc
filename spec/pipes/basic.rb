@@ -11,8 +11,4 @@
 
 # Basic pipe for rspec testing
 
-require 'activevlc'
-
-ActiveVlc::Pipeline.for 'input.mp4' do
-  to :display
-end
+ActiveVlc::Pipeline.for 'input.mp4'

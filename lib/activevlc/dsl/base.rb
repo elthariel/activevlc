@@ -13,7 +13,6 @@ module ActiveVlc::DSL
   class Base
     def initialize(context)
       @context = context
-      @options = Hash.new
     end
 
     def method_missing(sym, *args, &unused)
@@ -22,7 +21,7 @@ module ActiveVlc::DSL
 
     protected
     def __option(name, value)
-      @options[name] = value
+      @context[name] = value
     end
   end
 end

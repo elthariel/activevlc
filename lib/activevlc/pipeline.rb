@@ -10,39 +10,21 @@
 ## Copyright (C) 2013 Lta Akr
 
 require 'activevlc/stage'
+require 'activevlc/dsl/pipeline'
 
 module ActiveVlc
   class Pipeline
-    ################
-    # ClassMethods #
-    ################
-    class << self
-      def parse(path)
-        return nil unless File.exists?(path)
+    include DSL::Pipeline
 
-        # FIXME I hope to find some cleaner way to do this at some point
-        eval(File.open(path).read)
-      end
+    attr_reader :input, :sout
 
-      def for(*inputs, &block)
-        puts "Called ActiveVlc::Pipeline.for"
-        pipeline = new(inputs)
-        DSL::Pipeline.new(pipeline).instance_eval(&block)
-        pipeline
-      end
-    end
-
-    def initialize(array_or_string)
-      @inputs = [array_or_string] if array_or_string.is_a? String
-      @inputs ||= array_or_string
+    def initialize(input_array_or_string)
+      @input = Stage::Input.new(input_array_or_string)
+      @sout = Stage::Stream.new  # SOut = Stream Out
     end
 
     def fragment
-      @inputs.join ' '
-    end
-
-    # Append a Stage in the pipeline
-    def <<(stage)
+      [@input.fragment, @sout.fragment].join ' '
     end
   end
 end

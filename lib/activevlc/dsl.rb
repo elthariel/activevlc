@@ -9,14 +9,12 @@
 ##
 ## Copyright (C) 2013 Lta Akr
 
+module ActiveVlc
+  module DSL
+  end
+end
+
 require 'activevlc/pipeline'
 require 'activevlc/dsl/base'
 require 'activevlc/dsl/pipeline'
-
-module ActiveVlc
-  def self.pipe_for(*path, &block)
-    pipeline = Pipeline.new(path)
-    DSL::Pipeline.new(pipeline).instance_eval(&block)
-    pipeline
-  end
-end
+require 'activevlc/dsl/stream'
