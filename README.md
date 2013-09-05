@@ -1,6 +1,6 @@
 # Activevlc
 
-TODO: Write a better gem description
+TODO: Write a better gem description ;)
 
 ## Installation
 
