@@ -9,6 +9,11 @@
 ##
 ## Copyright (C) 2013 Lta Akr
 
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
+end
+
 require 'activevlc'
 
 RSpec.configure do |config|
