@@ -10,6 +10,7 @@
 ## Copyright (C) 2013 Lta Akr
 
 ActiveVlc::Pipeline.for 'input.mp4' do
+  gather
   transcode do
     audio :aac do
       bitrate :128k # 128 kpbs

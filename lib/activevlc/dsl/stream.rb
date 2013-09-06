@@ -11,6 +11,24 @@
 
 module ActiveVlc::DSL
   class Stream < Base
+    # FIXME refactor more DRY
+    def method_missing(sym, *args, &block)
+      puts sym
+      begin
+        klass = ActiveVlc::Stage.const_get sym.to_s.capitalize.to_sym
+      rescue
+        klass = ActiveVlc::Stage::Base
+      end
+
+      begin
+        dsl_klass = ActiveVlc::DSL.const_get sym.to_s.capitalize.to_sym
+      rescue
+        dsl_klass = ActiveVlc::DSL::Base
+      end
+
+      add_substage(klass, dsl_klass, *args, &block)
+    end
+
     def duplicate(&block)
       dup = ActiveVlc::Stage::Duplicate.new
       @context << dup
@@ -18,6 +36,7 @@ module ActiveVlc::DSL
       self
     end
 
+    # FIXME This method contains some dirty syntactic sugar as a PoC and need refactor
     def to(sym_or_hash, &block)
       if sym_or_hash.is_a?(Hash)
         type, opt = sym_or_hash.first
@@ -30,9 +49,18 @@ module ActiveVlc::DSL
       stage = ActiveVlc::Stage::Base.new(type)
       stage[:dst]= opt if type == :standard and opt
 
+      # Evaluate against the DSL if a block is givent
+      ActiveVlc::DSL::Base.new(stage).instance_eval(&block) if block_given?
+
       @context << stage
     end
 
-    alias :dup :duplicate
+    protected
+    def add_substage(stage_klass, dsl_klass, *args, &block)
+      stage = stage_klass.new(*args)
+      @context << stage
+      dsl = dsl_klass.new(stage)
+      dsl.instance_eval &block if block_given?
+    end
   end
 end

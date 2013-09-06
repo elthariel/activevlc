@@ -16,10 +16,12 @@ module ActiveVlc::DSL
     end
 
     def method_missing(sym, *args, &unused)
-      __option(sym.to_s.gsub('_', '-'), args.first)
+      __option(normalize_option(sym), args.first)
     end
 
     protected
+    def normalize_option(name) name.to_s.downcase.gsub('_', '-') end
+
     def __option(name, value)
       @context[name] = value
     end

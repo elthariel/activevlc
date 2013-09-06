@@ -40,9 +40,20 @@ describe ActiveVlc::Pipeline do
       ActiveVlc::Pipeline.parse('spec/pipes/duplicate.rb').class.should be(ActiveVlc::Pipeline)
     end
 
-    it 'produce a valid fragment' do
+    it 'produce the correct fragment' do
       expect(ActiveVlc::Pipeline.parse('spec/pipes/duplicate.rb').fragment)
         .to eq("input.mp3 :sout=\"#duplicate{dst=display, dst=standard{dst='output.mp3'}}\"")
+    end
+  end
+
+  describe '\'transcode_and_display\' pipeline' do
+    it 'is loaded' do
+      ActiveVlc::Pipeline.parse('spec/pipes/transcode_and_display.rb').class.should be(ActiveVlc::Pipeline)
+    end
+
+    it 'produce the correct fragment' do
+      expect(ActiveVlc::Pipeline.parse('spec/pipes/transcode_and_display.rb').fragment)
+        .to eq("input.mp4 :sout=\"#transcode{acodec=aac, vcodec=h264}:duplicate{dst=standard{mux=mp4, dst='output.mp4'}, dst=display}\"")
     end
   end
 end
