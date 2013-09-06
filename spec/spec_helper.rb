@@ -12,6 +12,9 @@
 require 'simplecov'
 SimpleCov.start do
   add_filter '/spec/'
+
+  add_group "Stages", '/stage/'
+  add_group "DSL", '/dsl/'
 end
 
 require 'activevlc'
