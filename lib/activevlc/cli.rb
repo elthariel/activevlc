@@ -42,5 +42,22 @@ module ActiveVlc
         exit 42
       end
     end
+
+    desc 'exec PIPE_PATH', 'Run the PIPE_PATH pipe file in VLC'
+    def exec(path)
+      if File.readable?(path)
+        begin
+          pipe = eval(File.read(path))
+          fragment = pipe.fragment
+        rescue
+          puts "Error while parsing pipe file"
+          exit 43
+        end
+        Kernel.exec "cvlc -vvv #{fragment}"
+      else
+        puts "Error: file [#{path}] doesn't exist or reading permission denied "
+      end
+        exit $?
+    end
   end
 end

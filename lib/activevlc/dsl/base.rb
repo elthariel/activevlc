@@ -15,14 +15,14 @@ module ActiveVlc::DSL
       @context = context
     end
 
-    def method_missing(sym, *args, &unused)
-      __option(normalize_option(sym), args.first)
+    def method_missing(sym, *args, &block)
+      __option(normalize_option(sym), args.first, &block)
     end
 
     protected
     def normalize_option(name) name.to_s.downcase.gsub('_', '-') end
 
-    def __option(name, value)
+    def __option(name, value, &block)
       @context[name] = value
     end
   end
