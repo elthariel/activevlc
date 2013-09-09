@@ -53,7 +53,7 @@ module ActiveVlc
           puts "Error while parsing pipe file"
           exit 43
         end
-        Kernel.exec "cvlc -vvv #{fragment}"
+        Kernel.exec "cvlc -vvv --play-and-exit #{fragment}"
       else
         puts "Error: file [#{path}] doesn't exist or reading permission denied."
       end
