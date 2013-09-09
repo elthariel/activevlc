@@ -1,4 +1,0 @@
-# etix@videolan and jb@videolan notes :
-  - Have a look at the gather module
-  - Some syntactic sugar for http-live will be helpfull, pay attention to this shitty module
-  - duplicate -> transcode, transcode -> duplicate
