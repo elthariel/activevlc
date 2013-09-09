@@ -13,7 +13,6 @@ module ActiveVlc::DSL
   class Stream < Base
     # FIXME refactor more DRY
     def method_missing(sym, *args, &block)
-      puts sym
       begin
         klass = ActiveVlc::Stage.const_get sym.to_s.capitalize.to_sym
       rescue

@@ -9,12 +9,14 @@
 ##
 ## Copyright (C) 2013 Lta Akr
 
+require 'activevlc/pipeline_dump'
 require 'activevlc/stage'
 require 'activevlc/dsl/pipeline'
 
 module ActiveVlc
   class Pipeline
     include DSL::Pipeline
+    include PipelineDump
 
     attr_reader :input, :sout
 
@@ -25,6 +27,13 @@ module ActiveVlc
 
     def fragment
       [@input.fragment, @sout.fragment].join ' '
+    end
+
+    #dump_name { "Pipe" }
+    dump_childs { [input, sout] }
+    def dump
+      puts "*** Dumping pipeline internal representation"
+      _dump
     end
   end
 end

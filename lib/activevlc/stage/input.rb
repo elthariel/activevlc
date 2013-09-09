@@ -13,6 +13,8 @@ require 'activevlc/stage'
 
 module ActiveVlc::Stage
   class Input < Base
+    include ActiveVlc::PipelineDump
+
     attr_reader :inputs
 
     def initialize(array_or_string)
@@ -31,6 +33,9 @@ module ActiveVlc::Stage
     def fragment
       @inputs.join ' '
     end
+
+    dump_name { "Input : " + @inputs.join(', ') }
+    dump_childs { [] }
   end
 end
 

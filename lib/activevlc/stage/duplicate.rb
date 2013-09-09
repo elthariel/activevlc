@@ -14,6 +14,9 @@ require 'activevlc/stage/base'
 module ActiveVlc::Stage
   class Duplicate < Base
     attr_reader :stages
+
+    dump_childs { @stages }
+
     def initialize()
       super(:duplicate)
       @stages = []

@@ -59,5 +59,10 @@ module ActiveVlc
       end
         exit $?
     end
+
+    desc 'dump PIPE_PATH', 'Dump the internal representation of the pipeline defined in the file PIPE_PATH'
+    def dump(path)
+      pipe = eval(File.read(path)).dump
+    end
   end
 end

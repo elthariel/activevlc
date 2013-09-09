@@ -11,6 +11,8 @@
 
 module ActiveVlc::Stage
   class Stream < Base
+    dump_childs { @chain }
+
     def initialize
       super :sout
       @chain = []

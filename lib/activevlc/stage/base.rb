@@ -12,6 +12,9 @@
 # Represents a stage in the pipeline
 module ActiveVlc::Stage
   class Base
+    include ActiveVlc::PipelineDump
+    dump_name { "#{self.class.name}(#{@type}): #{options}" }
+
     attr_reader :type
     attr_reader :options
 
