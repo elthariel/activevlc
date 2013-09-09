@@ -17,6 +17,7 @@ module ActiveVlc::DSL
         klass = ActiveVlc::Stage.const_get sym.to_s.capitalize.to_sym
       rescue
         klass = ActiveVlc::Stage::Base
+        args.unshift(sym)
       end
 
       begin
@@ -26,13 +27,6 @@ module ActiveVlc::DSL
       end
 
       add_substage(klass, dsl_klass, *args, &block)
-    end
-
-    def duplicate(&block)
-      dup = ActiveVlc::Stage::Duplicate.new
-      @context << dup
-      ActiveVlc::DSL::Stream.new(dup).instance_eval(&block)
-      self
     end
 
     # FIXME This method contains some dirty syntactic sugar as a PoC and need refactor
@@ -48,7 +42,7 @@ module ActiveVlc::DSL
       stage = ActiveVlc::Stage::Base.new(type)
       stage[:dst]= opt if type == :standard and opt
 
-      # Evaluate against the DSL if a block is givent
+      # Evaluate against the DSL if a block is given
       ActiveVlc::DSL::Base.new(stage).instance_eval(&block) if block_given?
 
       @context << stage

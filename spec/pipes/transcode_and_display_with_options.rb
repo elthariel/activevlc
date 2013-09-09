@@ -12,9 +12,10 @@
 ActiveVlc::Pipeline.for 'input.mp4' do
   gather
   transcode do
+    deinterlace
     audio :aac do
-      bitrate :128k # 128 kpbs
-      profile :main
+      bitrate 128 # 128 kpbs
+      channels 2
     end
     video :h264 do
       encoder :x264 do
@@ -22,7 +23,7 @@ ActiveVlc::Pipeline.for 'input.mp4' do
         bframes 4
         cabac false
       end
-      bitrate 1024 * 512 # 512 kbps
+      bitrate 512 # 512 kbps
     end
   end
   duplicate do

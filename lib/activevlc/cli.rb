@@ -38,7 +38,7 @@ module ActiveVlc
         pipe = eval(File.read(path))
         puts pipe.fragment
       else
-        puts "Error: file [#{path}] doesn't exist or reading permission denied "
+        puts "Error: file [#{path}] doesn't exist or reading permission denied."
         exit 42
       end
     end
@@ -55,14 +55,19 @@ module ActiveVlc
         end
         Kernel.exec "cvlc -vvv #{fragment}"
       else
-        puts "Error: file [#{path}] doesn't exist or reading permission denied "
+        puts "Error: file [#{path}] doesn't exist or reading permission denied."
       end
-        exit $?
+        exit $?.exitstatus
     end
 
     desc 'dump PIPE_PATH', 'Dump the internal representation of the pipeline defined in the file PIPE_PATH'
     def dump(path)
-      pipe = eval(File.read(path)).dump
+      if File.readable?(path)
+        pipe = eval(File.read(path)).dump
+      else
+        puts "Error: file [#{path}] doesn't exist or reading permission denied."
+        exit 42
+      end
     end
   end
 end

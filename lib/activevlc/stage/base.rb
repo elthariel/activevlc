@@ -46,7 +46,13 @@ module ActiveVlc::Stage
             _recurse_on_suboption(key, value)
           end
         else
-          "#{key}=#{format_value value}"
+          if value.nil?
+            "#{key}"
+          elsif value == false
+            "no-#{key}"
+          else
+            "#{key}=#{format_value value}"
+          end
         end
       end.join(', ')
 

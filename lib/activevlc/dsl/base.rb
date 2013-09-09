@@ -23,7 +23,13 @@ module ActiveVlc::DSL
     def normalize_option(name) name.to_s.downcase.gsub('_', '-') end
 
     def __option(name, value, &block)
-      @context[name] = value
+      if block_given?
+        subcontext = { _this_: value }
+        Base.new(subcontext).instance_eval &block
+        @context[name] = subcontext
+      else
+        @context[name] = value
+      end
     end
   end
 end

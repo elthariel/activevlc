@@ -13,6 +13,7 @@ ActiveVlc::Pipeline.for 'input.mp4' do
   transcode do
     audio :aac
     video :h264
+    subtitle :svcd
   end
   duplicate do
     to :file do

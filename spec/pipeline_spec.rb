@@ -53,7 +53,20 @@ describe ActiveVlc::Pipeline do
 
     it 'produce the correct fragment' do
       expect(ActiveVlc::Pipeline.parse('spec/pipes/transcode_and_display.rb').fragment)
-        .to eq("input.mp4 :sout=\"#transcode{acodec=aac, vcodec=h264}:duplicate{dst=standard{mux=mp4, dst='output.mp4'}, dst=display}\"")
+        .to eq("input.mp4 :sout=\"#transcode{acodec=aac, vcodec=h264, scodec=svcd}:duplicate{dst=standard{mux=mp4, dst='output.mp4'}, dst=display}\"")
     end
   end
+
+  describe '\'transcode_and_display_with_options\' pipeline' do
+    it 'is loaded' do
+      ActiveVlc::Pipeline.parse('spec/pipes/transcode_and_display_with_options.rb').class
+        .should be(ActiveVlc::Pipeline)
+    end
+
+    it 'produce the correct fragment' do
+      expect(ActiveVlc::Pipeline.parse('spec/pipes/transcode_and_display_with_options.rb').fragment)
+        .to eq("input.mp4 :sout=\"#gather:transcode{deinterlace, acodec=aac, ab=128, channels=2, vcodec=h264, venc=x264{bpyramid=strict, bframes=4, no-cabac}, vb=512}:duplicate{dst=standard{mux=mp4, dst='output.mp4'}, dst=display}\"")
+    end
+  end
+
 end
