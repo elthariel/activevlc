@@ -70,6 +70,7 @@ describe ActiveVlc::Pipeline do
   end
 
   describe '\'duplicate_then_transcode\' pipeline' do
+
   end
 
 end
