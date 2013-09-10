@@ -54,8 +54,12 @@ Then you can run it using :
 
 ## Development status
 
-This gem is at alpha stage and is still under active
-development althought it might already be usable for many usages
+This gem is at alpha stage and is still under active development
+althought it might already be usable for many usages.
+
+If you have any trouble, idea or question, please use GitHub issue
+system. If you have an idea with code attached to it, got to the
+'Contributing' section below.
 
 ## Installation
 
@@ -84,6 +88,8 @@ or to run the CLI tool to get the embedded help.
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+3. Write some specs for your feature
+4. Implements your feature and make your test pass
+5. Commit your changes (`git commit -am 'Add some feature'`)
+6. Push to the branch (`git push origin my-new-feature`)
+7. Create new Pull Request
