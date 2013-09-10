@@ -19,11 +19,10 @@ module ActiveVlc
 
     def _dump(depth = 0)
       name = instance_eval &_find_in_ancestors(:_dump_name)
-
-      puts "#{_dump_depth(depth)}+ #{name}"
-
       childs = instance_eval &_find_in_ancestors(:_dump_childs)
-      childs.each { |c| c._dump(depth + 1) }
+
+      "#{_dump_depth(depth)}+ #{name}\n" +
+        childs.map { |c| c._dump(depth + 1) }.join
     end
 
     def _dump_depth(depth)

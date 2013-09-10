@@ -18,7 +18,7 @@ module ActiveVlc::DSL
         return nil unless File.exists?(path)
 
         # FIXME I hope to find some cleaner way to do this at some point
-        eval(File.open(path).read)
+        eval(File.open(path).read, nil, path, 0)
       end
 
       def for(*inputs, &block)

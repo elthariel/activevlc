@@ -34,17 +34,33 @@ module ActiveVlc::DSL
       if sym_or_hash.is_a?(Hash)
         type, opt = sym_or_hash.first
       else
-        type, opt = [sym_or_hash, nil]
+        type, opt = [sym_or_hash]
       end
 
-      type = :standard if type == :file
+      if type == :chain
+        to_chain(&block)
+      elsif [:file, :standard, :std].include? type
+        to_file(opt, &block)
+      else
+        stage = ActiveVlc::Stage::Base.new(type)
+        # Evaluate against the DSL if a block is given
+        ActiveVlc::DSL::Base.new(stage).instance_eval(&block) if block_given?
+        @context << stage
+      end
+    end
 
-      stage = ActiveVlc::Stage::Base.new(type)
-      stage[:dst]= opt if type == :standard and opt
+    def to_chain(&block)
+      chain = ActiveVlc::Stage::Chain.new
+      ActiveVlc::DSL::Stream.new(chain).instance_eval(&block) if block_given?
+      @context << chain
+    end
+
+    def to_file(dst = nil, &block)
+      stage = ActiveVlc::Stage::Base.new(:standard)
+      stage[:dst] = dst if dst
 
       # Evaluate against the DSL if a block is given
       ActiveVlc::DSL::Base.new(stage).instance_eval(&block) if block_given?
-
       @context << stage
     end
 

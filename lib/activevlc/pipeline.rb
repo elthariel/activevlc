@@ -29,11 +29,9 @@ module ActiveVlc
       [@input.fragment, @sout.fragment].join ' '
     end
 
-    #dump_name { "Pipe" }
     dump_childs { [input, sout] }
     def dump
-      puts "*** Dumping pipeline internal representation"
-      _dump
+      "ActiveVlc: Dumping pipeline internal representation\n" + _dump
     end
   end
 end

@@ -63,7 +63,7 @@ module ActiveVlc
     desc 'dump PIPE_PATH', 'Dump the internal representation of the pipeline defined in the file PIPE_PATH'
     def dump(path)
       if File.readable?(path)
-        pipe = eval(File.read(path)).dump
+        puts eval(File.read(path)).dump
       else
         puts "Error: file [#{path}] doesn't exist or reading permission denied."
         exit 42

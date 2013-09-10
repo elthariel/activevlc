@@ -9,6 +9,8 @@
 ##
 ## Copyright (C) 2013 Lta Akr
 
+require 'spec_helper'
+
 describe 'ActiveVlc::PipelineDump' do
   describe 'CLI' do
     it 'needs a pipeline file as paremeter' do
@@ -20,9 +22,9 @@ describe 'ActiveVlc::PipelineDump' do
     end
   end
 
-  it 'displays a readable dump of the pipeline on STDOUT' do
+  it 'return a readable representation of the pipeline' do
     dump = <<-DUMP
-*** Dumping pipeline internal representation
+ActiveVlc: Dumping pipeline internal representation
 + ActiveVlc::Pipeline
   + Input : input.mp4
   + ActiveVlc::Stage::Stream(sout): {}
@@ -31,6 +33,6 @@ describe 'ActiveVlc::PipelineDump' do
       + ActiveVlc::Stage::Base(standard): {"mux"=>:mp4, "dst"=>"output.mp4"}
       + ActiveVlc::Stage::Base(display): {}
 DUMP
-    `bundle exec activevlc dump spec/pipes/transcode_and_display.rb`.should eq(dump)
+    ActiveVlc::Pipeline.parse('spec/pipes/transcode_and_display.rb').dump.should eq(dump)
   end
 end

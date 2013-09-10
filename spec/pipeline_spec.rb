@@ -70,7 +70,15 @@ describe ActiveVlc::Pipeline do
   end
 
   describe '\'duplicate_then_transcode\' pipeline' do
+    it 'is loaded' do
+      ActiveVlc::Pipeline.parse('spec/pipes/duplicate_then_transcode.rb').class
+        .should be(ActiveVlc::Pipeline)
+    end
 
+    it 'produce the correct fragment' do
+      expect(ActiveVlc::Pipeline.parse('spec/pipes/duplicate_then_transcode.rb').fragment)
+        .to eq("input.mp4 :sout=\"#duplicate{dst=transcode{acodec=aac, vcodec=h264, scodec=svcd}:standard{mux=mp4, dst='output.mp4'}, dst=display}\"")
+    end
   end
 
 end
