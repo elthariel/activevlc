@@ -1,21 +1,21 @@
 # ActiveVlc
 
-Do you know VLC, the famous media player ? I'm pretty sure you do ! 
+Do you know VLC, the famous media player ? I'm pretty sure you do !
 Do you know this is also a pretty powerfull media processing and streaming framework ? Maybe...
-Do you understand something about the command line syntax to access vlc's underlying 
+Do you understand something about the command line syntax to access vlc's underlying
 powers ? If you don't this tool is for you !
 
-ActiveVlc provides a simple syntax to configure and run transcoding/streaming/processing 
+ActiveVlc provides a simple syntax to configure and run transcoding/streaming/processing
 operations using VLC. Here's a simple example :
 
 ## Example
 
-Let's say you want to read an mp4 file, transcode it using different options, save the result to 
+Let's say you want to read an mp4 file, transcode it using different options, save the result to
 another file while displaying it to control what's happening. Using the standard vlc's chain syntax
 you'd have to write
 
     vlc input.mp4 :sout="#transcode{deinterlace, acodec=aac, ab=128, channels=2, vcodec=h264, venc=x264{bpyramid=strict, bframes=4, no-cabac}, vb=512}:duplicate{dst=standard{mux=mp4, dst='output.mp4'}, dst=display}"
-    
+
 Not very readable isn't it ? Let's try the same with ActiveVlc :
 
 ```ruby
@@ -45,22 +45,22 @@ AtiveVlc::Pipeline.for 'input.mp4' do
 end
 ```
 
-This sintax might be a lot more verbose than the original vlc's one, 
+This sintax might be a lot more verbose than the original vlc's one,
 it is still A LOT more readable and understandable, and since this is plain ruby
 you can add comment and arbitrary code !
 Then you can run it using :
 
     activevlc exec /path/to/the/pipeline.rb
-    
+
 ## Development status
 
-This gem is not yet published yet and is still under active 
+This gem is at alpha stage and is still under active
 development althought it might already be usable for many usages
 
 ## Installation
 
 First and foremost, you must have VLC installed on your system and the
-vlc binary must be in your PATH since we doesn't provide yet a cool 
+vlc binary must be in your PATH since we doesn't provide yet a cool
 configuration system for this (contribution welcomed !)
 
 Add this line to your application's Gemfile:
@@ -77,7 +77,7 @@ Or install it yourself as:
 
 ## Usage
 
-Currently, the best documentation is to have a look to the spec (/spec/pipes) 
+Currently, the best documentation is to have a look to the spec (/spec/pipes)
 or to run the CLI tool to get the embedded help.
 
 ## Contributing
