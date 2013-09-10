@@ -19,31 +19,30 @@ you'd have to write
 Not very readable isn't it ? Let's try the same with ActiveVlc :
 
 ```ruby
-    ActiveVlc::Pipeline.for 'input.mp4' do
-      gather
-      transcode do
-        deinterlace
-        audio :aac do
-          bitrate 128 # 128 kpbs
-          channels 2
-        end
-        video :h264 do
-          encoder :x264 do
-            bpyramid :strict
-            bframes 4
-            cabac false
-          end
-          bitrate 512 # 512 kbps
-        end
-      end
-      duplicate do
-        to :file do
-          mux :mp4
-          dst 'output.mp4'
-        end
-        to :display
-      end
+AtiveVlc::Pipeline.for 'input.mp4' do
+  transcode do
+    deinterlace
+    audio :aac do
+      bitrate 128 # 128 kpbs
+      channels 2
     end
+    video :h264 do
+      encoder :x264 do
+        bpyramid :strict
+        bframes 4
+        cabac false
+      end
+      bitrate 512 # 512 kbps
+    end
+  end
+  duplicate do
+    to :file do
+      mux :mp4
+      dst 'output.mp4'
+    end
+    to :display
+  end
+end
 ```
 
 This sintax might be a lot more verbose than the original vlc's one, 
@@ -52,6 +51,11 @@ you can add comment and arbitrary code !
 Then you can run it using :
 
     activevlc exec /path/to/the/pipeline.rb
+    
+## Development status
+
+This gem is not yet published yet and is still under active 
+development althought it might already be usable for many usages
 
 ## Installation
 
