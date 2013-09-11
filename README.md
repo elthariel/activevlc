@@ -1,5 +1,7 @@
 # ActiveVlc
 
+[![Gem Version](https://badge.fury.io/rb/activevlc.png)](http://badge.fury.io/rb/activevlc)
+
 Do you know VLC, the famous media player ? I'm pretty sure you do !
 Do you know this is also a pretty powerfull media processing and streaming framework ? Maybe...
 Do you understand something about the command line syntax to access vlc's underlying
