@@ -1,0 +1,1 @@
+../spec/pipes/duplicate.rb
