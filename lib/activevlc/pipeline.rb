@@ -20,9 +20,11 @@ module ActiveVlc
 
     attr_reader :input, :sout
 
-    def initialize(input_array_or_string)
+    def initialize(input_array_or_string, &block)
       @input = Stage::Input.new(input_array_or_string)
-      @sout = Stage::Stream.new  # SOut = Stream Out
+      @sout = Stage::Stream.new # SOut = Stream Out
+
+      ::ActiveVlc::DSL::Stream.new(@sout).instance_eval(&block) if block_given?
     end
 
     def fragment
