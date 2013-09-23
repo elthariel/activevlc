@@ -24,5 +24,6 @@ module ActiveVlc
   end
 end
 
-require 'activevlc/libvlc/core'
+require 'activevlc/libvlc/api'
 require 'activevlc/libvlc/media'
+require 'activevlc/libvlc/instance'
