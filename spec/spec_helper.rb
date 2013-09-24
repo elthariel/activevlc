@@ -15,6 +15,7 @@ SimpleCov.start do
 
   add_group "Stages", '/stage/'
   add_group "DSL", '/dsl/'
+  add_group "LibVlc", '/libvlc/'
 end
 
 require 'activevlc'

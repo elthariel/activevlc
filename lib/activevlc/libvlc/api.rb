@@ -27,7 +27,7 @@ module ActiveVlc::LibVlc
      libvlc_get_version:      [[], :string],
      libvlc_get_compiler:     [[], :string],
      libvlc_free:             [[:pointer], :void]
-   }
+    }
 
     #
     # Media functions

@@ -27,3 +27,6 @@ end
 require 'activevlc/libvlc/api'
 require 'activevlc/libvlc/media'
 require 'activevlc/libvlc/instance'
+require 'activevlc/libvlc/media_list'
+require 'activevlc/libvlc/media_list_player'
+require 'activevlc/libvlc/event_manager'

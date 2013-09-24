@@ -18,13 +18,69 @@ describe ActiveVlc::LibVlc do
 
     it 'reports libvlc version' do
       ActiveVlc::LibVlc::Api.libvlc_get_version.should match(/\d\.\d+\.\d+/)
+      ActiveVlc::LibVlc.version.should match(/\d\.\d+\.\d+/)
+      ActiveVlc::LibVlc.compiler.should match(/\d\.\d+\.\d+/)
     end
   end
 
-  describe 'Ruby wrapper: Instance' do
+  describe 'Ruby wrapper: Instance/MediaXXX/EventManger creation' do
+    let(:vlc)    { ActiveVlc::LibVlc::Instance.new [' ', '--play-and-exit'] }
+    let(:media)  { vlc.create_media 'file:///tmp/test.mp4' }
+    let(:media2) { vlc.create_media '/tmp/test2.mp4' }
+    let(:list)   { vlc.create_media_list }
+    let(:player) { vlc.create_player }
+
     it 'can creates an instance' do
-      args = ['-vvv', '--play-and-exit']
-      vlc = ActiveVlc::LibVlc::Instance.new args
+      vlc.should be_a_kind_of(ActiveVlc::LibVlc::Instance)
+      vlc.ptr.null?.should be_false
     end
+
+    it 'can creates a Media from an Instance using an MRL' do
+      media.should be_a_kind_of(ActiveVlc::LibVlc::Media)
+      media.ptr.null?.should be_false
+    end
+
+    it 'can creates a Media from an Instance using a path' do
+      media_from_path = vlc.create_media('/tmp/pwet')
+      media_from_path.should be_a_kind_of(ActiveVlc::LibVlc::Media)
+      media_from_path.ptr.null?.should be_false
+    end
+
+    it 'can set an option on a Media' do
+      media << ":sout='#display'"
+      expect { media << 42 }.to raise_error
+    end
+
+    it 'can creates a MediaList from an Instance' do
+      list.should be_a_kind_of(ActiveVlc::LibVlc::MediaList)
+      list.ptr.null?.should be_false
+    end
+
+    it 'allows setting media of a media list' do
+      list << media2
+      list.media = media
+      list.length.should eq(1)
+    end
+
+    it 'allows adding media to a MediaList' do
+      list << media
+      list << media2
+      list.length.should eq(2)
+    end
+
+    it 'allows the creation of a MediaListPlayer' do
+      player.should be_a_kind_of(ActiveVlc::LibVlc::MediaListPlayer)
+      player.ptr.null?.should be_false
+      list << media
+      player.media_list = list
+      expect {player.media_list = nil}.to raise_error
+    end
+
+    it 'allows creation of EventManger' do
+      media.event_manager.should be_a_kind_of(ActiveVlc::LibVlc::EventManager)
+      list.event_manager.should be_a_kind_of(ActiveVlc::LibVlc::EventManager)
+      player.event_manager.should be_a_kind_of(ActiveVlc::LibVlc::EventManager)
+    end
+
   end
 end
