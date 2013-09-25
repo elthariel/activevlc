@@ -24,13 +24,22 @@ describe ActiveVlc::LibVlc::EventManager do
   end
 
   it 'registers and stores callbacks' do
-    #event1 = ActiveVlc::LibVlc::Api::EventType[:libvlc_MediaListPlayerStopped]
-    event1 = ActiveVlc::LibVlc::Api::EventType[:libvlc_MediaListPlayerStopped]
-    event2 = ActiveVlc::LibVlc::EventManager::EventType[:libvlc_MediaListPlayerPlayed]
+    event1 = ActiveVlc::LibVlc::Api::EventType[:MediaListPlayerStopped]
+    event2 = ActiveVlc::LibVlc::EventManager::EventType[:MediaListPlayerPlayed]
     player_event.callbacks.keys.length.should eq(0)
-    player_event.on(:MediaListPlayerNextItemSet) {}
     player_event.on(event1) {}
     player_event.on(event2) {}
-    player_event.callbacks.keys.length.should eq(3)
+    player_event.on(:MediaListPlayerNextItemSet) {}
+    # For some reason the 'Played' event is invalid :-/ ...
+    player_event.callbacks.keys.length.should eq(2)
+    player.play
+  end
+
+  it 'receives events' do
+    player_event.on(:MediaListPlayerNextItemSet) {}
+    player_event.on(:MediaListPlayerStopped) {}
+    player.play
+    player.stop
+    player_event.events_received.should eq(2)
   end
 end

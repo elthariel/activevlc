@@ -17,63 +17,93 @@ module ActiveVlc::LibVlc
     callback :exit_handler, [:pointer], :void
 
     core_functions = {
-     libvlc_new:              [[:int, :pointer], :pointer],
-     libvlc_release:          [[:pointer], :void],
-     libvlc_retain:           [[:pointer], :void],
-     libvlc_add_intf:         [[:pointer, :string], :int],
-     libvlc_set_exit_handler: [[:pointer, :exit_handler, :pointer], :void],
-     libvlc_wait:             [[:pointer], :void],
-     libvlc_set_user_agent:   [[:pointer, :string, :string], :void],
-     libvlc_get_version:      [[], :string],
-     libvlc_get_compiler:     [[], :string],
-     libvlc_free:             [[:pointer], :void]
+     new:               [[:int, :pointer], :pointer],
+     release:           [[:pointer], :void],
+     retain:            [[:pointer], :void],
+     add_intf:          [[:pointer, :string], :int],
+     set_exit_handler:  [[:pointer, :exit_handler, :pointer], :void],
+     wait:              [[:pointer], :void],
+     set_user_agent:    [[:pointer, :string, :string], :void],
+     get_version:       [[], :string],
+     get_compiler:      [[], :string],
+     free:              [[:pointer], :void]
     }
 
     #
     # Media functions
     #
     media_functions = {
-      libvlc_media_new_location:    [[:pointer, :string], :pointer],
-      libvlc_media_new_path:        [[:pointer, :string], :pointer],
-      libvlc_media_add_option:      [[:pointer, :string], :void],
-      libvlc_media_add_option_flag: [[:pointer, :string, :int], :void],
-      libvlc_media_duplicate:       [[:pointer], :pointer],
-      libvlc_media_event_manager:   [[:pointer], :pointer],
-      libvlc_media_retain:          [[:pointer], :void],
-      libvlc_media_release:         [[:pointer], :void],
-      libvlc_media_get_mrl:         [[:pointer], :string]
+      media_new_location:     [[:pointer, :string], :pointer],
+      media_new_path:         [[:pointer, :string], :pointer],
+      media_add_option:       [[:pointer, :string], :void],
+      media_add_option_flag:  [[:pointer, :string, :int], :void],
+      media_duplicate:        [[:pointer], :pointer],
+      media_event_manager:    [[:pointer], :pointer],
+      media_retain:           [[:pointer], :void],
+      media_release:          [[:pointer], :void],
+      media_get_mrl:          [[:pointer], :string]
     }
 
     #
     # Media List functions
     #
     media_list_functions = {
-      libvlc_media_list_new:            [[:pointer], :pointer],
-      libvlc_media_list_retain:         [[:pointer], :void],
-      libvlc_media_list_release:        [[:pointer], :void],
-      libvlc_media_list_lock:           [[:pointer], :void],
-      libvlc_media_list_unlock:         [[:pointer], :void],
-      libvlc_media_list_event_manager:  [[:pointer], :pointer],
-      libvlc_media_list_set_media:      [[:pointer, :pointer], :void],
-      libvlc_media_list_add_media:      [[:pointer, :pointer], :int],
-      libvlc_media_list_insert_media:   [[:pointer, :pointer, :int], :int],
-      libvlc_media_list_count:          [[:pointer], :int]
+      media_list_new:             [[:pointer], :pointer],
+      media_list_retain:          [[:pointer], :void],
+      media_list_release:         [[:pointer], :void],
+      media_list_lock:            [[:pointer], :void],
+      media_list_unlock:          [[:pointer], :void],
+      media_list_event_manager:   [[:pointer], :pointer],
+      media_list_set_media:       [[:pointer, :pointer], :void],
+      media_list_add_media:       [[:pointer, :pointer], :int],
+      media_list_insert_media:    [[:pointer, :pointer, :int], :int],
+      media_list_count:           [[:pointer], :int]
+    }
+
+
+    #
+    # Media Player functions and type
+    #
+    PlayerState = enum(:NothingSpecial,
+                       :Opening,
+                       :Buffering,
+                       :Playing,
+                       :Paused,
+                       :Stopped,
+                       :Ended,
+                       :Error)
+
+    media_player_functions = {
+      media_player_new:             [[:pointer], :pointer],
+      media_player_new_from_media:  [[:pointer], :pointer],
+      media_player_retain:          [[:pointer], :void],
+      media_player_release:         [[:pointer], :void],
+      media_player_set_media:       [[:pointer, :pointer], :void],
+      media_player_get_media:       [[:pointer], :pointer],
+      media_player_event_manager:   [[:pointer], :pointer],
+      media_player_is_playing:      [[:pointer], :int],
+      media_player_play:            [[:pointer], :int],
+      media_player_pause:           [[:pointer], :void],
+      media_player_stop:            [[:pointer], :void],
+      media_player_get_state:       [[:pointer], PlayerState]
     }
 
     #
     # Media List Player functions
     #
     media_list_player_functions = {
-      libvlc_media_list_player_new:             [[:pointer], :pointer],
-      libvlc_media_list_player_retain:          [[:pointer], :void],
-      libvlc_media_list_player_release:         [[:pointer], :void],
-      libvlc_media_list_player_event_manager:   [[:pointer], :pointer],
-      libvlc_media_list_player_set_media_list:  [[:pointer, :pointer], :void],
-      libvlc_media_list_player_play:            [[:pointer], :void],
-      libvlc_media_list_player_pause:           [[:pointer], :void],
-      libvlc_media_list_player_stop:            [[:pointer], :void],
-      libvlc_media_list_player_next:            [[:pointer], :void],
-      libvlc_media_list_player_previous:        [[:pointer], :void]
+      media_list_player_new:                [[:pointer], :pointer],
+      media_list_player_retain:             [[:pointer], :void],
+      media_list_player_release:            [[:pointer], :void],
+      media_list_player_event_manager:      [[:pointer], :pointer],
+      media_list_player_set_media_list:     [[:pointer, :pointer], :void],
+      media_list_player_set_media_player:   [[:pointer, :pointer], :void],
+      media_list_player_play:               [[:pointer], :void],
+      media_list_player_pause:              [[:pointer], :void],
+      media_list_player_stop:               [[:pointer], :void],
+      media_list_player_next:               [[:pointer], :void],
+      media_list_player_previous:           [[:pointer], :void],
+      media_list_player_is_playing:         [[:pointer], :int]
     }
 
     #
@@ -82,74 +112,74 @@ module ActiveVlc::LibVlc
     callback :event_handler, [:pointer, :pointer], :void
 
     EventType = enum(
-      :libvlc_MediaMetaChanged,          0,
-      :libvlc_MediaSubItemAdded,
-      :libvlc_MediaDurationChanged,
-      :libvlc_MediaParsedChanged,
-      :libvlc_MediaFreed,
-      :libvlc_MediaStateChanged,
+      :MediaMetaChanged,          0,
+      :MediaSubItemAdded,
+      :MediaDurationChanged,
+      :MediaParsedChanged,
+      :MediaFreed,
+      :MediaStateChanged,
 
-      :libvlc_MediaPlayerMediaChanged,   0x100,
-      :libvlc_MediaPlayerNothingSpecial,
-      :libvlc_MediaPlayerOpening,
-      :libvlc_MediaPlayerBuffering,
-      :libvlc_MediaPlayerPlaying,
-      :libvlc_MediaPlayerPaused,
-      :libvlc_MediaPlayerStopped,
-      :libvlc_MediaPlayerForward,
-      :libvlc_MediaPlayerBackward,
-      :libvlc_MediaPlayerEndReached,
-      :libvlc_MediaPlayerEncounteredError,
-      :libvlc_MediaPlayerTimeChanged,
-      :libvlc_MediaPlayerPositionChanged,
-      :libvlc_MediaPlayerSeekableChanged,
-      :libvlc_MediaPlayerPausableChanged,
-      :libvlc_MediaPlayerTitleChanged,
-      :libvlc_MediaPlayerSnapshotTaken,
-      :libvlc_MediaPlayerLengthChanged,
-      :libvlc_MediaPlayerVout,
+      :MediaPlayerMediaChanged,   0x100,
+      :MediaPlayerNothingSpecial,
+      :MediaPlayerOpening,
+      :MediaPlayerBuffering,
+      :MediaPlayerPlaying,
+      :MediaPlayerPaused,
+      :MediaPlayerStopped,
+      :MediaPlayerForward,
+      :MediaPlayerBackward,
+      :MediaPlayerEndReached,
+      :MediaPlayerEncounteredError,
+      :MediaPlayerTimeChanged,
+      :MediaPlayerPositionChanged,
+      :MediaPlayerSeekableChanged,
+      :MediaPlayerPausableChanged,
+      :MediaPlayerTitleChanged,
+      :MediaPlayerSnapshotTaken,
+      :MediaPlayerLengthChanged,
+      :MediaPlayerVout,
 
-      :libvlc_MediaListItemAdded,        0x200,
-      :libvlc_MediaListWillAddItem,
-      :libvlc_MediaListItemDeleted,
-      :libvlc_MediaListWillDeleteItem,
+      :MediaListItemAdded,        0x200,
+      :MediaListWillAddItem,
+      :MediaListItemDeleted,
+      :MediaListWillDeleteItem,
 
-      :libvlc_MediaListViewItemAdded,    0x300,
-      :libvlc_MediaListViewWillAddItem,
-      :libvlc_MediaListViewItemDeleted,
-      :libvlc_MediaListViewWillDeleteItem,
+      :MediaListViewItemAdded,    0x300,
+      :MediaListViewWillAddItem,
+      :MediaListViewItemDeleted,
+      :MediaListViewWillDeleteItem,
 
-      :libvlc_MediaListPlayerPlayed,     0x400,
-      :libvlc_MediaListPlayerNextItemSet,
-      :libvlc_MediaListPlayerStopped,
+      :MediaListPlayerPlayed,     0x400,
+      :MediaListPlayerNextItemSet,
+      :MediaListPlayerStopped,
 
-      :libvlc_MediaDiscovererStarted,    0x500,
-      :libvlc_MediaDiscovererEnded,
+      :MediaDiscovererStarted,    0x500,
+      :MediaDiscovererEnded,
 
-      :libvlc_VlmMediaAdded,             0x600,
-      :libvlc_VlmMediaRemoved,
-      :libvlc_VlmMediaChanged,
-      :libvlc_VlmMediaInstanceStarted,
-      :libvlc_VlmMediaInstanceStopped,
-      :libvlc_VlmMediaInstanceStatusInit,
-      :libvlc_VlmMediaInstanceStatusOpening,
-      :libvlc_VlmMediaInstanceStatusPlaying,
-      :libvlc_VlmMediaInstanceStatusPause,
-      :libvlc_VlmMediaInstanceStatusEnd,
-      :libvlc_VlmMediaInstanceStatusError
+      :VlmMediaAdded,             0x600,
+      :VlmMediaRemoved,
+      :VlmMediaChanged,
+      :VlmMediaInstanceStarted,
+      :VlmMediaInstanceStopped,
+      :VlmMediaInstanceStatusInit,
+      :VlmMediaInstanceStatusOpening,
+      :VlmMediaInstanceStatusPlaying,
+      :VlmMediaInstanceStatusPause,
+      :VlmMediaInstanceStatusEnd,
+      :VlmMediaInstanceStatusError
       )
 
     event_manager_functions = {
-      libvlc_event_attach:    [[:pointer, :int, :event_handler, :pointer], :int],
-      libvlc_event_detach:    [[:pointer, :int, :event_handler, :pointer], :void],
-      libvlc_event_type_name: [[:int], :string]
+      event_attach:     [[:pointer, EventType, :event_handler, :pointer], :int],
+      event_detach:     [[:pointer, EventType, :event_handler, :pointer], :void],
+      event_type_name:  [[:int], :string]
     }
 
     # Here we use all these data and actually attache the functions.
-    [ core_functions, media_functions, media_list_functions,
+    [ core_functions, media_functions, media_list_functions, media_player_functions,
       media_list_player_functions, event_manager_functions].each do |functions|
       functions.each do |symbol, args|
-        attach_function symbol, args[0], args[1]
+        attach_function "libvlc_#{symbol}".to_sym, args[0], args[1]
       end
     end
   end

@@ -4,7 +4,7 @@ module ActiveVlc::LibVlc
     layout :media_list, :pointer
 
     def self.release(ptr)
-      puts "Releasing an MediaListPtr"
+      # puts "Releasing an MediaListPtr"
       Api.libvlc_media_list_release(ptr)
     end
   end

@@ -5,7 +5,7 @@ module ActiveVlc::LibVlc
     layout :nothing, :pointer
 
     def self.release(ptr)
-      puts "Releasing an InstancePtr #{ptr.inspect}"
+      #puts "Releasing an InstancePtr #{ptr.inspect}"
       Api.libvlc_release(ptr)
     end
   end

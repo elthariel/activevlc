@@ -75,12 +75,5 @@ describe ActiveVlc::LibVlc do
       player.media_list = list
       expect {player.media_list = nil}.to raise_error
     end
-
-    it 'allows creation of EventManger' do
-      media.event_manager.should be_a_kind_of(ActiveVlc::LibVlc::EventManager)
-      list.event_manager.should be_a_kind_of(ActiveVlc::LibVlc::EventManager)
-      player.event_manager.should be_a_kind_of(ActiveVlc::LibVlc::EventManager)
-    end
-
   end
 end

@@ -3,21 +3,26 @@ module ActiveVlc::LibVlc
     layout :nothing, :pointer
 
     def self.release(ptr)
-      puts "Releasing a MediaListPlayerPtr"
+      # puts "Releasing a MediaListPlayerPtr #{ptr.inspect}"
       Api.libvlc_media_list_player_release(ptr)
     end
   end
 
   class MediaListPlayer
-    attr_reader :ptr
+    attr_reader :ptr, :player, :list
 
-    def initialize(ptr, media_list = nil)
+    def initialize(ptr, media_list = nil, media_player = nil)
       @ptr = MediaListPlayerPtr.new(ptr)
+      @list = media_list
+      @player = media_player
+
       self.media_list = media_list if media_list
+      self.media_player = media_player if media_player
     end
 
     def media_list=(list)
       if list and list.is_a?(MediaList)
+        @list = media_list
         Api.libvlc_media_list_player_set_media_list(@ptr, list.ptr)
       else
         raise "You must provide a valid MediaList"
@@ -26,6 +31,17 @@ module ActiveVlc::LibVlc
 
     def event_manager
       EventManager.new Api.libvlc_media_list_player_event_manager(@ptr)
+    end
+
+    def playing?
+      Api.libvlc_media_list_player_is_playing(@ptr) != 0
+    end
+
+    def media_player=(player)
+      if player.is_a?(MediaPlayer) and not playing?
+        @player = player
+        Api.libvlc_media_list_player_set_media_player(player.ptr)
+      end
     end
 
     def play
