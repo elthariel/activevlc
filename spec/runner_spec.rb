@@ -9,15 +9,14 @@ describe ActiveVlc::Runner do
   end
 
   it 'can be ran' do
-    out = "output.mp4"
+    out = "output.ogg"
     pipe = ActiveVlc.parse('spec/pipes/no_input.rb')
-    runner = ActiveVlc::Runner.new(pipe, '-vvv')
-    #pipe.input << 'spec/samples/click.wav'
-    pipe.input << 'test.mp3'
+    runner = ActiveVlc::Runner.new(pipe)
+    pipe.input << 'spec/samples/click.wav'
 
     `rm -f #{out}`
     runner.run
     File.exist?(out).should be_true
-    # `rm -f #{out}`
+    `rm -f #{out}`
   end
 end
