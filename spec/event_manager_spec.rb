@@ -73,7 +73,7 @@ describe ActiveVlc::LibVlc::EventManager do
     first_event = ActiveVlc::LibVlc::Api::EventType[:MediaPlayerMediaChanged]
     last_event = ActiveVlc::LibVlc::Api::EventType[:MediaPlayerVout]
     (first_event..last_event).to_a.each { |e| player_event.on(e) {} }
-    list_player.player = player
+    list_player.media_player = player
     list_player.play
     sleep 0.25
     list_player.stop

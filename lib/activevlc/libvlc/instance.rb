@@ -13,7 +13,7 @@ module ActiveVlc::LibVlc
   class Instance
     attr_reader :exit_callback, :ptr
 
-    def initialize(args)
+    def initialize(args = [""])
       argc = args.length
       @argv = args.map{ |a| FFI::MemoryPointer.from_string a}
       test = FFI::MemoryPointer.new(:pointer, argc)
@@ -39,10 +39,10 @@ module ActiveVlc::LibVlc
       MediaList.new(ml)
     end
 
-    def create_list_player()
+    def create_list_player(list = nil, player = nil)
       mlp = Api.libvlc_media_list_player_new(@ptr)
       raise "Unable to create a libvlc_media_list_player_t" if mlp.null?
-      MediaListPlayer.new(mlp)
+      MediaListPlayer.new(mlp, list, player)
     end
 
     def create_player(media = nil)

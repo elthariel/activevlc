@@ -21,6 +21,7 @@ module ActiveVlc::LibVlc
       raise "option must be a String" unless option.is_a?(String)
 
       Api.libvlc_media_add_option(@ptr, option)
+      self
     end
 
     def event_manager

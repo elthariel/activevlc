@@ -89,14 +89,14 @@ describe ActiveVlc::Pipeline do
 
     it 'produce the correct fragment' do
       expect(ActiveVlc::parse('spec/pipes/no_input.rb').fragment)
-        .to eq(" :sout=\"#transcode{acodec=aac}:standard{dst='output.mp4'}\"")
+        .to eq(" :sout=\"#transcode{acodec=vorbis}:standard{mux=ogg, dst='output.ogg'}\"")
     end
 
     it 'can be assigned inputs' do
       pipe = ActiveVlc::parse('spec/pipes/no_input.rb')
       pipe.input << "input.mp4"
       pipe.input << "input2.mp4"
-      pipe.fragment.should eq("input.mp4 input2.mp4 :sout=\"#transcode{acodec=aac}:standard{dst='output.mp4'}\"")
+      pipe.fragment.should eq("input.mp4 input2.mp4 :sout=\"#transcode{acodec=vorbis}:standard{mux=ogg, dst='output.ogg'}\"")
     end
   end
 

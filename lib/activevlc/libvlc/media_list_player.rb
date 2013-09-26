@@ -37,7 +37,7 @@ module ActiveVlc::LibVlc
       Api.libvlc_media_list_player_is_playing(@ptr) != 0
     end
 
-    def player=(player)
+    def media_player=(player)
       if player.is_a?(MediaPlayer) and not playing?
         raise "Player already has a media" if player.media
         @player = player
