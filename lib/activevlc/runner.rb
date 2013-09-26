@@ -3,14 +3,30 @@ module ActiveVlc
   class Runner
     def initialize(pipeline, *args)
       @pipeline = pipeline
-      @api = LibVlc::Instance.new args
+      @args = args
     end
 
+    # Nobody can escape his faith.
+    def stop_runner!
+      @running = false
+    end
+
+    def run
+      if Process.respond_to? :fork
+        pid = Process.fork { _run }
+        Process.wait pid
+      else
+        _run
+      end
+    end
+
+    protected
     # Here we setup the media/list/player/event_manager
     # to run the pipeline using LibVlc. There's a big unavoidable
     # hack to run synchronously / 'join' the libvlc instance.
-    def run
-      # Preparing list/player/sout fragment/event manager
+    def _run
+      # Preparing instance/list/player/sout fragment/event manager
+      @api = LibVlc::Instance.new @args
       sout = @pipeline.sout.fragment
       list = @api.create_media_list
       player = @api.create_player
@@ -46,9 +62,5 @@ module ActiveVlc
       end
     end
 
-    # Nobody can escape his faith.
-    def stop_runner!
-      @running = false
-    end
   end
 end
