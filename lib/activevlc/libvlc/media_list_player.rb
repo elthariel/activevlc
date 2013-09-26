@@ -22,7 +22,7 @@ module ActiveVlc::LibVlc
 
     def media_list=(list)
       if list and list.is_a?(MediaList)
-        @list = media_list
+        @list = list
         Api.libvlc_media_list_player_set_media_list(@ptr, list.ptr)
       else
         raise "You must provide a valid MediaList"
@@ -37,10 +37,11 @@ module ActiveVlc::LibVlc
       Api.libvlc_media_list_player_is_playing(@ptr) != 0
     end
 
-    def media_player=(player)
+    def player=(player)
       if player.is_a?(MediaPlayer) and not playing?
+        raise "Player already has a media" if player.media
         @player = player
-        Api.libvlc_media_list_player_set_media_player(player.ptr)
+        Api.libvlc_media_list_player_set_media_player(@ptr, player.ptr)
       end
     end
 

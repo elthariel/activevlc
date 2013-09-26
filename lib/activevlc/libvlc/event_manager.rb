@@ -37,10 +37,14 @@ module ActiveVlc::LibVlc
     protected
     def _event(event, void)
       event = Event.new(event)
+      type = EventType[event[:type]]
 
       @events_received += 1;
 
-      #puts "Received event: #{EventType[event[:type]]}"
+      #puts "Received event (#{@events_received}): #{EventType[event[:type]]}"
+
+      return unless @callbacks[event[:type]].is_a? Array
+      @callbacks[event[:type]].each { |proc| proc.call(type) }
     end
   end
 end

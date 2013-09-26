@@ -28,7 +28,7 @@ describe ActiveVlc::LibVlc do
     let(:media)  { vlc.create_media 'file:///tmp/test.mp4' }
     let(:media2) { vlc.create_media '/tmp/test2.mp4' }
     let(:list)   { vlc.create_media_list }
-    let(:player) { vlc.create_player }
+    let(:list_player) { vlc.create_list_player }
 
     it 'can creates an instance' do
       vlc.should be_a_kind_of(ActiveVlc::LibVlc::Instance)
@@ -69,11 +69,25 @@ describe ActiveVlc::LibVlc do
     end
 
     it 'allows the creation of a MediaListPlayer' do
-      player.should be_a_kind_of(ActiveVlc::LibVlc::MediaListPlayer)
-      player.ptr.null?.should be_false
+      list_player.should be_a_kind_of(ActiveVlc::LibVlc::MediaListPlayer)
+      list_player.ptr.null?.should be_false
       list << media
-      player.media_list = list
-      expect {player.media_list = nil}.to raise_error
+      list_player.media_list = list
+      expect {list_player.media_list = nil}.to raise_error
+    end
+
+    it 'allows creation of a MediaPlayer with an Instance' do
+      player = vlc.create_player
+      player.should be_a_kind_of(ActiveVlc::LibVlc::MediaPlayer)
+      player.ptr.null?.should be_false
+    end
+
+    it 'allows creation of a MediaPlayer with a Media' do
+      player = vlc.create_player media
+      player.should be_a_kind_of(ActiveVlc::LibVlc::MediaPlayer)
+      player.ptr.null?.should be_false
+      player.media.should be_a_kind_of(ActiveVlc::LibVlc::Media)
+      player.media.should be(media)
     end
   end
 end

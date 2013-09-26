@@ -39,10 +39,18 @@ module ActiveVlc::LibVlc
       MediaList.new(ml)
     end
 
-    def create_player
+    def create_list_player()
       mlp = Api.libvlc_media_list_player_new(@ptr)
       raise "Unable to create a libvlc_media_list_player_t" if mlp.null?
       MediaListPlayer.new(mlp)
+    end
+
+    def create_player(media = nil)
+      if media and media.is_a?(Media)
+        MediaPlayer.new(media)
+      else
+        MediaPlayer.new self
+      end
     end
 
     def wait!
