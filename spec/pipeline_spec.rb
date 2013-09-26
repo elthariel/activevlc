@@ -71,13 +71,32 @@ describe ActiveVlc::Pipeline do
 
   describe '\'duplicate_then_transcode\' pipeline' do
     it 'is loaded' do
-      ActiveVlc::Pipeline.parse('spec/pipes/duplicate_then_transcode.rb').class
+      ActiveVlc::Pipeline::parse('spec/pipes/duplicate_then_transcode.rb').class
         .should be(ActiveVlc::Pipeline)
     end
 
     it 'produce the correct fragment' do
       expect(ActiveVlc::Pipeline.parse('spec/pipes/duplicate_then_transcode.rb').fragment)
         .to eq("input.mp4 :sout=\"#duplicate{dst=transcode{acodec=aac, vcodec=h264, scodec=svcd}:standard{mux=mp4, dst='output.mp4'}, dst=display}\"")
+    end
+  end
+
+  describe '\'no_input\' pipeline' do
+    it "is loaded" do
+      ActiveVlc::parse('spec/pipes/no_input.rb').class
+        .should be(ActiveVlc::Pipeline)
+    end
+
+    it 'produce the correct fragment' do
+      expect(ActiveVlc::parse('spec/pipes/no_input.rb').fragment)
+        .to eq(" :sout=\"#transcode{acodec=aac}:standard{dst='output.mp4'}\"")
+    end
+
+    it 'can be assigned inputs' do
+      pipe = ActiveVlc::parse('spec/pipes/no_input.rb')
+      pipe.input << "input.mp4"
+      pipe.input << "input2.mp4"
+      pipe.fragment.should eq("input.mp4 input2.mp4 :sout=\"#transcode{acodec=aac}:standard{dst='output.mp4'}\"")
     end
   end
 

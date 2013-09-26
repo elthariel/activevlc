@@ -9,7 +9,7 @@
 ##
 ## Copyright (C) 2013 Lta Akr
 
-ActiveVlc::Pipeline.for 'input.mp4' do
+ActiveVlc::pipe_for 'input.mp4' do
   transcode do
     audio :aac
     video :h264

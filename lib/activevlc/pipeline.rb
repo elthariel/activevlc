@@ -20,7 +20,7 @@ module ActiveVlc
 
     attr_reader :input, :sout
 
-    def initialize(input_array_or_string, &block)
+    def initialize(input_array_or_string = nil, &block)
       @input = Stage::Input.new(input_array_or_string)
       @sout = Stage::Stream.new # SOut = Stream Out
 

@@ -22,6 +22,7 @@ module ActiveVlc::Stage
 
       @inputs = [array_or_string] if array_or_string.is_a? String
       @inputs ||= array_or_string
+      @inputs ||= []
     end
 
     def <<(new_inputs)
