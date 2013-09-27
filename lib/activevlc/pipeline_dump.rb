@@ -9,8 +9,6 @@
 ##
 ## Copyright (C) 2013 Lta Akr
 
-require 'debugger'
-
 module ActiveVlc
   module PipelineDump
     extend ActiveSupport::Concern

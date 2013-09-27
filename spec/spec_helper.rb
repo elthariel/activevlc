@@ -9,13 +9,15 @@
 ##
 ## Copyright (C) 2013 Lta Akr
 
-require 'simplecov'
-SimpleCov.start do
-  add_filter '/spec/'
+unless ENV['NO_COVERAGE']
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter '/spec/'
 
-  add_group "Stages", '/stage/'
-  add_group "DSL", '/dsl/'
-  add_group "LibVlc", '/libvlc/'
+    add_group "Stages", '/stage/'
+    add_group "DSL", '/dsl/'
+    add_group "LibVlc", '/libvlc/'
+  end
 end
 
 require 'activevlc'
