@@ -43,11 +43,12 @@ module ActiveVlc
       end
     end
 
-    desc 'exec PIPE_PATH', 'Run the PIPE_PATH pipe file in VLC'
-    def exec(path)
+    desc 'exec PIPE_PATH [input_file_1 [input_file_2] [...]]', 'Launch vlc executable to run the pipeline described in PIPE_PATH file'
+    def exec(path, *inputs)
       if File.readable?(path)
         begin
-          pipe = eval(File.read(path))
+          pipe = ActiveVlc::parse(path)
+          pipe.inputs << inputs
           fragment = pipe.fragment
         rescue
           puts "Error while parsing pipe file"
@@ -58,6 +59,24 @@ module ActiveVlc
         puts "Error: file [#{path}] doesn't exist or reading permission denied."
       end
         exit $?.exitstatus
+    end
+
+    desc 'run PIPE_PATH [input_file_1 [input_file_2] [...]]', 'Run the PIPE_PATH pipeline using LibVlc (usually better than exec)'
+    def exec(path, *inputs)
+      if File.readable?(path)
+        begin
+          pipe = ActiveVlc::parse(path)
+          pipe.inputs << inputs
+          fragment = pipe.fragment
+        rescue
+          puts "Error while parsing pipe file"
+          exit 43
+        end
+        ActiveVlc::Runner.new(pipe).run
+      else
+        puts "Error: file [#{path}] doesn't exist or reading permission denied."
+      end
+      exit 0
     end
 
     desc 'dump PIPE_PATH', 'Dump the internal representation of the pipeline defined in the file PIPE_PATH'
