@@ -2,6 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/activevlc.png)](http://badge.fury.io/rb/activevlc)
 [![Code Climate](https://codeclimate.com/github/elthariel/activevlc.png)](https://codeclimate.com/github/elthariel/activevlc)
+[![Build Status](https://travis-ci.org/elthariel/activevlc.png?branch=master)](https://travis-ci.org/elthariel/activevlc)
 
 Do you know VLC, the famous media player ? I'm pretty sure you do !
 Do you know this is also a pretty powerfull media processing and streaming framework ? Maybe...
