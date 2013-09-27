@@ -19,4 +19,16 @@ describe ActiveVlc::Runner do
     File.exist?(out).should be_true
     `rm -f #{out}`
   end
+
+  it 'can be ran in a separate process' do
+    out = "output.ogg"
+    pipe = ActiveVlc.parse('spec/pipes/no_input.rb')
+    runner = ActiveVlc::Runner.new(pipe)
+    pipe.input << 'spec/samples/click.wav'
+
+    `rm -f #{out}`
+    runner.run
+    File.exist?(out).should be_true
+    `rm -f #{out}`
+  end
 end

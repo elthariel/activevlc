@@ -1,4 +1,9 @@
-
+#
+# Small note about this file code's coverage
+# Since most of the code is wan in another process
+# (see #run), the code coverage cannot be reported.
+# This file have around 100% of test code coverage
+#
 module ActiveVlc
   class Runner
     def initialize(pipeline, *args)
@@ -11,8 +16,8 @@ module ActiveVlc
       @running = false
     end
 
-    def run
-      if Process.respond_to? :fork
+    def run(fork = false)
+      if fork and Process.respond_to? :fork
         pid = Process.fork { _run }
         Process.wait pid
       else

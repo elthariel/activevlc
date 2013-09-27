@@ -21,18 +21,28 @@ end
 require 'activevlc'
 
 RSpec.configure do |config|
-  # ## Mock Framework
+  config.order_groups do |groups|
+    groups.shuffle!
+    runner = groups.index { |g| g.described_class == ActiveVlc::Runner }
+    if runner
+      runner = groups.delete_at runner
+      groups.unshift runner
+    end
+    groups
+  end
   #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
+  # We force the run order of the specs to ensure runner_specs get executed first.
+  # This is important because libvlc seems to creates some internal state that
+  # leads to a deadlock when executed last
   #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
+  # files = config.instance_variable_get(:@files_to_run)
+  # puts files
+  # files.delete ''
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
   #     --seed 1234
-  config.order = "random"
+  #config.order = "random"
 end
 
