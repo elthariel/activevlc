@@ -62,7 +62,7 @@ module ActiveVlc
     end
 
     desc 'run path [input_file_1 [input_file_2] [...]]', 'Run the path pipeline using LibVlc (usually better than exec)'
-    def exec(path, *inputs)
+    def run(path, *inputs)
       if File.readable?(path)
         begin
           pipe = ActiveVlc::parse(path)
