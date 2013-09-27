@@ -29,10 +29,10 @@ module ActiveVlc
       puts "ActiveVlc version #{ActiveVlc::VERSION}"
     end
 
-    desc 'vlc SUBCOMMAND ...ARGS', 'vlc specific commands'
+    desc 'vlc ', 'VLC specific commands. See activevlc help vlc for details'
     subcommand 'vlc', ActiveVlc::CLI::Vlc
 
-    desc 'fragment PIPE_PATH', 'Outputs vlc :sout=chain fragment for the pipe defined in \'PIPE_PATH\' file'
+    desc 'fragment path', 'Outputs vlc \':sout=...\' string for the pipeline defined in the \'path\' file'
     def fragment(path)
       if File.readable?(path)
         pipe = eval(File.read(path))
@@ -43,7 +43,7 @@ module ActiveVlc
       end
     end
 
-    desc 'exec PIPE_PATH [input_file_1 [input_file_2] [...]]', 'Launch vlc executable to run the pipeline described in PIPE_PATH file'
+    desc 'exec path [input_file_1 [input_file_2] [...]]', 'Launch vlc executable to run the pipeline described in path file'
     def exec(path, *inputs)
       if File.readable?(path)
         begin
@@ -61,7 +61,7 @@ module ActiveVlc
         exit $?.exitstatus
     end
 
-    desc 'run PIPE_PATH [input_file_1 [input_file_2] [...]]', 'Run the PIPE_PATH pipeline using LibVlc (usually better than exec)'
+    desc 'run path [input_file_1 [input_file_2] [...]]', 'Run the path pipeline using LibVlc (usually better than exec)'
     def exec(path, *inputs)
       if File.readable?(path)
         begin
@@ -79,7 +79,7 @@ module ActiveVlc
       exit 0
     end
 
-    desc 'dump PIPE_PATH', 'Dump the internal representation of the pipeline defined in the file PIPE_PATH'
+    desc 'dump path', 'Dump the internal representation of the pipeline defined in the file path'
     def dump(path)
       if File.readable?(path)
         puts eval(File.read(path)).dump
