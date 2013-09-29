@@ -14,7 +14,10 @@ module ActiveVlc
   end
 end
 
+# Common features shared by most Stages
 require 'activevlc/stage/base'
+
+# All implemented stages
 require 'activevlc/stage/input'
 require 'activevlc/stage/stream'
 require 'activevlc/stage/duplicate'

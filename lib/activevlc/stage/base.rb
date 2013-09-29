@@ -13,12 +13,15 @@
 module ActiveVlc::Stage
   class Base
     include ActiveVlc::PipelineDump
+    include ActiveVlc::Parametric
     dump_name { "#{self.class.name}(#{@type}): #{options}" }
 
     attr_reader :type
+    # Options represents vlc's sout options
     attr_reader :options
 
     def initialize(type = :dummy)
+      super()# ActiveVlc::Parametric
       @options = Hash.new
       @type = type
     end

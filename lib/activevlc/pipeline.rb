@@ -17,10 +17,12 @@ module ActiveVlc
   class Pipeline
     include DSL::Pipeline
     include PipelineDump
+    include Parametric
 
     attr_reader :input, :sout
 
     def initialize(input_array_or_string = nil, &block)
+      super()
       @input = Stage::Input.new(input_array_or_string)
       @sout = Stage::Stream.new # SOut = Stream Out
 
@@ -29,6 +31,15 @@ module ActiveVlc
 
     def fragment
       [@input.fragment, @sout.fragment].join ' '
+    end
+
+    def visit(params)
+      @parameters.merge!(params)
+      @sout.visit(@parameters)
+    end
+    alias :params :visit
+    def has_missing_parameter?
+      @sout.has_missing_parameter?
     end
 
     dump_childs { [input, sout] }

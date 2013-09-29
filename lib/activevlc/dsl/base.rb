@@ -19,6 +19,15 @@ module ActiveVlc::DSL
       __option(normalize_option(sym), args.first, &block)
     end
 
+    def param(name, value = nil)
+      if @context.parameters.has_param? name
+        @context.parameters[name]
+      else
+        @context.parameters[name] = ActiveVlc::Parameter.new(name, value)
+      end
+    end
+    alias :p :param
+
     protected
     def normalize_option(name) name.to_s.downcase.gsub('_', '-') end
 

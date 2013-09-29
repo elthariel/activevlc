@@ -24,6 +24,16 @@ module ActiveVlc::Stage
       self
     end
 
+    # See Parametric#visit
+    def visit(params)
+      super params
+      @chain.each { |c| c.visit(params) }
+    end
+    # See Parametric#has_empty_param?
+    def has_missing_parameter?
+      @chain.reduce(super) { |accu, substage| accu or substage.has_missing_parameter? }
+    end
+
     def fragment
       return "" if @chain.empty?
       sout_string = @chain.map{|s| s.fragment}.join ':'
