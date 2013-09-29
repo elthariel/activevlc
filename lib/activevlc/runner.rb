@@ -37,7 +37,8 @@ module ActiveVlc
       player = @api.create_player
       events = player.event_manager
 
-      sout.gsub!('\'', '').gsub!('"', '')
+      sout.gsub!('\'', '')
+      sout.gsub!('"', '')
 
       # Building the medias with the right options
       medias = @pipeline.input.inputs.map do |input|

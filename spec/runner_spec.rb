@@ -20,7 +20,7 @@ describe ActiveVlc::Runner do
     `rm -f #{out}`
   end
 
-  it 'can be ran in a separate process' do
+  it 'can be ran in a separate proces' do
     out = "output.ogg"
     pipe = ActiveVlc.parse('spec/pipes/no_input.rb')
     runner = ActiveVlc::Runner.new(pipe)
@@ -30,5 +30,10 @@ describe ActiveVlc::Runner do
     runner.run
     File.exist?(out).should be_true
     `rm -f #{out}`
+  end
+
+  it 'can be ran using the cmd line' do
+    `bundle exec activevlc exec spec/pipes/basic.rb`
+    $?.exitstatus.should eq(0)
   end
 end

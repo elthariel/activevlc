@@ -1,3 +1,4 @@
 module ActiveVlc
-  VERSION = "0.0.3"
+  CODENAME = "Reserved Words"
+  VERSION = "0.0.4"
 end

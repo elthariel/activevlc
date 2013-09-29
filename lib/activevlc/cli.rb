@@ -44,39 +44,26 @@ module ActiveVlc
     end
 
     desc 'exec path [input_file_1 [input_file_2] [...]]', 'Launch vlc executable to run the pipeline described in path file'
+    option :cmd, type: :boolean, default: false
     def exec(path, *inputs)
       if File.readable?(path)
         begin
           pipe = ActiveVlc::parse(path)
-          pipe.inputs << inputs
+          pipe.input << inputs
           fragment = pipe.fragment
         rescue
-          puts "Error while parsing pipe file"
+          puts "Error while parsing pipe file: #{$!}"
           exit 43
         end
-        Kernel.exec "cvlc -vvv --play-and-exit #{fragment}"
+        if options[:cmd]
+          Kernel.exec "vlc -I dummy -vvv --play-and-exit #{fragment}"
+        else
+          ActiveVlc::Runner.new(pipe).run
+        end
       else
         puts "Error: file [#{path}] doesn't exist or reading permission denied."
       end
         exit $?.exitstatus
-    end
-
-    desc 'run path [input_file_1 [input_file_2] [...]]', 'Run the path pipeline using LibVlc (usually better than exec)'
-    def run(path, *inputs)
-      if File.readable?(path)
-        begin
-          pipe = ActiveVlc::parse(path)
-          pipe.inputs << inputs
-          fragment = pipe.fragment
-        rescue
-          puts "Error while parsing pipe file"
-          exit 43
-        end
-        ActiveVlc::Runner.new(pipe).run
-      else
-        puts "Error: file [#{path}] doesn't exist or reading permission denied."
-      end
-      exit 0
     end
 
     desc 'dump path', 'Dump the internal representation of the pipeline defined in the file path'
