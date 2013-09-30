@@ -14,10 +14,10 @@ require 'spec_helper'
 describe 'ActiveVlc::PipelineDump' do
   describe 'CLI' do
     it 'needs a pipeline file as paremeter' do
-      `bundle exec activevlc dump 2>&1`.should match(/ERROR/)
+      `bundle exec activevlc pipe dump 2>&1`.should match(/ERROR/)
     end
     it 'needs an existent pipeline file' do
-      `bundle exec activevlc dump inexistent.rb`
+      `bundle exec activevlc pipe dump inexistent.rb`
       $?.exitstatus.should_not eq(0)
     end
   end

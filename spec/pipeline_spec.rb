@@ -12,6 +12,13 @@
 require 'spec_helper'
 
 describe ActiveVlc::Pipeline do
+  describe "CLI" do
+    it 'can ouput fragment with provided inputs' do
+      `bundle exec activevlc pipe fragment spec/pipes/no_input.rb input.mp4 input2.mp4`
+        .should eq("input.mp4 input2.mp4 :sout=\"#transcode{acodec=vorbis}:standard{mux=ogg, dst='output.ogg'}\"\n")
+    end
+  end
+
   describe '\'basic\' pipeline' do
     it 'returns nil if the file doesn\'t exists' do
       ActiveVlc::Pipeline.parse('dontexist.rb').should be_nil

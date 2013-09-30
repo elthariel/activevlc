@@ -79,7 +79,7 @@ it is still A LOT more readable and understandable, and since this is plain ruby
 you can add comment and arbitrary code !
 Then you can run it using :
 
-    activevlc exec /path/to/the/pipeline.rb input.mp4
+    activevlc pipe exec /path/to/the/pipeline.rb input.mp4
 
 ### From Ruby code
 
@@ -99,6 +99,59 @@ def my_encoding_method(input, output)
   ActiveVlc::Runner.new(pipe).run
   # Your transcoding operation is over (except if there were strong errors)
 end
+```
+
+## Named parameters
+
+My fellow developpers, i now we all love reusable stuff, whether it's socks,
+underwears or code. I'm pretty sure you'd also love to re-use the pipeline you
+have or at least to make them a little bit configurable, may it be only for
+the differents outputs. For this purpose, ActiveVlc provides a mecanism called
+'named parameters'.
+
+This features allows you to provide a placeholder instead of a value in the
+pipeline file/code and to replace the placeholder with the actual value later,
+just before running the pipeline, for example. Let's see how it works:
+
+```ruby
+ActiveVlc::pipe do
+  transcode do
+    audio :aac do
+      bitrate param(:audio_bitrate) # parameter named 'audio_bitrate'
+      channels p(:audio_channels)   # parameter named 'audio_channels'
+     end
+  end
+  to :file do
+    mux :mp4
+    dst p(:outfile)                 # parameter named 'outfile'
+  end
+end
+```
+
+*Pay attention to the fact the named parameters are configured Pipeline-wise, there's no namespacing.*
+
+In the example above, we define 3 named parameters that will be configured
+later. There's no difference between the 'param' and 'p' methods: the latter
+is just syntactic sugar. You have the choice between the 'explicit' and the
+'lazy' way.
+
+Now, we you want to run the pipeline you can provide the named paramters as a
+Hash.
+
+Using the command line :
+
+    $> bundle exec activevlc pipe exec my_pipe input.mp3 --params=outfile:rspec.aac audio_bitrate:128 audio_channels:42
+    :sout="#transcode{acodec=aac, ab=128, channels=42}:standard{mux=mp4, dst=rspec.aac}"
+
+or directly from Ruby code :
+
+```ruby
+>> pipe # The pipeline defined above
+=> ActiveVlc::Pipeline
+>> pipe.params outfile: 'rspec.aac', audio_bitrate: 128, audio_channels: 42
+=> nil
+>> pipe.fragment
+=> ":sout=\"#transcode{acodec=aac, ab=128, channels=42}:standard{mux=mp4, dst=rspec.aac}\""
 ```
 
 ## Development status

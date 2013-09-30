@@ -37,7 +37,7 @@ module ActiveVlc::Stage
     def fragment
       return "" if @chain.empty?
       sout_string = @chain.map{|s| s.fragment}.join ':'
-      ":sout=\"##{sout_string}\""
+      res = ":sout=\"##{sout_string}\""
     end
   end
 end

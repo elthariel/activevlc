@@ -40,6 +40,8 @@ module ActiveVlc
       sout.gsub!('\'', '')
       sout.gsub!('"', '')
 
+      puts sout
+
       # Building the medias with the right options
       medias = @pipeline.input.inputs.map do |input|
         #puts sout

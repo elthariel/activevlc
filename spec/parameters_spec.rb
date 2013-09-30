@@ -9,6 +9,16 @@ describe "Named parameters" do
     ActiveVlc::Pipeline.parse path
   end
 
+  describe "CLI" do
+    it "supports passing named parameters" do
+      path = 'spec/pipes/transcode_and_display_with_params.rb'
+      out = `bundle exec activevlc pipe fragment #{path} --params=outfile:rspec.aac audio_bitrate:128 audio_channels:42`
+      out.should match(/rspec\.aac/)
+      out.should match(/128/)
+      out.should match(/42/)
+    end
+  end
+
   it 'can be defined with "p" and "param" keywords in DSL' do
     pipe.should be_a_kind_of(ActiveVlc::Pipeline)
   end
