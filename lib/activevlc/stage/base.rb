@@ -20,9 +20,9 @@ module ActiveVlc::Stage
     # Options represents vlc's sout options
     attr_reader :options
 
-    def initialize(type = :dummy)
-      super()# ActiveVlc::Parametric
-      @options = Hash.new
+    def initialize(type = :dummy, opts = {})
+      super() # ActiveVlc::Parametric
+      @options = Hash.new.merge opts
       @type = type
     end
 
@@ -30,32 +30,22 @@ module ActiveVlc::Stage
     def []=(key, value) @options[key] = value end
 
     def fragment
-      _recurse_on_suboption(@type, @options)
+      render_fragment(@type, @options)
     end
 
     protected
     # Handles the rendering of the options hash to a vlc sout format
     #
-    # key = vlc, value = {test: 42, sub: {_this_: 'this', opt1='foo'}, sub2: {opt2: 'bar'}}
-    # renders to "key{test=42,sub=this{opt1=foo},sub2{opt2:bar}}"
-    def _recurse_on_suboption(k, h)
+    def render_fragment(k, h)
       map = h.map do |key, value|
-        if value.is_a?(Hash)
-          value_without_this = value.clone
-          this = value_without_this.delete :_this_
-          if this
-            "#{key}=#{_recurse_on_suboption(this, value_without_this)}"
-          else
-            _recurse_on_suboption(key, value)
-          end
+        if value.nil?
+          "#{key}"
+        elsif value == false
+          "no-#{key}"
+        elsif value.is_a?(Base) and not value.type
+          "#{key}#{format_value value}"
         else
-          if value.nil?
-            "#{key}"
-          elsif value == false
-            "no-#{key}"
-          else
-            "#{key}=#{format_value value}"
-          end
+          "#{key}=#{format_value value}"
         end
       end.join(', ')
 
@@ -67,7 +57,9 @@ module ActiveVlc::Stage
     end
 
     def format_value(value)
-      if value.is_a? String
+      if value.is_a? Base
+        "#{value.fragment}"
+      elsif value.is_a? String
         "'#{value}'"
       else
         "#{value}"

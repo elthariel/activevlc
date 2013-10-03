@@ -40,8 +40,8 @@ describe ActiveVlc::Stage::Base do
     stage = ActiveVlc::Stage::Base.new
     stage[:test] = 42
     stage[:opt1] = 'pwet'
-    stage[:sub] = {_this_: 'this', opt2: 'foo'}
-    stage[:sub2] = {opt3: 'bar'}
+    stage[:sub] = ActiveVlc::Stage::Base.new(:this, opt2: 'foo')
+    stage[:sub2] = ActiveVlc::Stage::Base.new(nil, opt3: 'bar')
 
     stage.fragment.should eq("dummy{test=42, opt1='pwet', sub=this{opt2='foo'}, sub2{opt3='bar'}}")
   end

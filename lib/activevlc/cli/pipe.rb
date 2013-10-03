@@ -12,10 +12,10 @@ module ActiveVlc::CLI
     desc 'exec path [input_1 [input_2] [...]]', 'Launch vlc executable to run the pipeline described in path file'
     option :cmd, type: :boolean, default: false
     def exec(path, *inputs)
-      _load_pipe do |pipe|
+      _load_pipe(path, *inputs) do |pipe|
         fragment = pipe.fragment
         if options[:cmd]
-          Kernel.exec "vlc -I dummy -vvv --play-and-exit #{fragment}"
+          Kernel.exec "vlc -I dummy -vvv #{fragment} vlc://quit"
         else
           ActiveVlc::Runner.new(pipe).run
         end
@@ -44,6 +44,7 @@ module ActiveVlc::CLI
           yield pipe if block_given?
         rescue
           puts "Error while parsing pipe file: #{$!}"
+          puts $!.backtrace.join("\n")
           exit 43
         end
       else

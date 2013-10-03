@@ -33,7 +33,7 @@ module ActiveVlc::DSL
 
     def __option(name, value, &block)
       if block_given?
-        subcontext = { _this_: value }
+        subcontext = ActiveVlc::Stage::Base.new(value)
         Base.new(subcontext).instance_eval &block
         @context[name] = subcontext
       else
