@@ -23,7 +23,9 @@ module ActiveVlc
         Process.wait pid
       elsif opts[:type] == :system
         fragment = @pipeline.fragment
-        `vlc #{@args.join ' '} #{fragment} vlc://quit`
+        vlc_path = opts[:vlc_path]
+        vlc_path ||= 'vlc'
+        `#{vlc_path} #{@args.join ' '} #{fragment} vlc://quit`
       elsif opts[:type] == :process
         _run
       end
