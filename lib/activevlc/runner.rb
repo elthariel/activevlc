@@ -16,11 +16,15 @@ module ActiveVlc
       @running = false
     end
 
-    def run(fork = false)
-      if fork and Process.respond_to? :fork
-        pid = Process.fork { _run }
+    def run(opts = {})
+      opts = {type: :process}
+      if opts[:type] == :form and Process.respond_to? :fork
+        pid = Process.fork { _run; exit 0 }
         Process.wait pid
-      else
+      elsif opts[:type] == :system
+        fragment = @pipeline.fragment
+        `vlc #{@args.join ' '} #{fragment} vlc://quit`
+      elsif opts[:type] == :process
         _run
       end
     end

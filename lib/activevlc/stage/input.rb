@@ -31,6 +31,10 @@ module ActiveVlc::Stage
       self
     end
 
+    def clear!
+      @inputs = []
+    end
+
     def fragment
       @inputs.join ' '
     end
