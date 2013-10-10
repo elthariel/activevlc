@@ -13,7 +13,7 @@ powers ? If you don't this tool is for you !
 ActiveVlc provides a simple syntax to configure and run transcoding/streaming/processing
 operations using VLC. Here's a simple example :
 
-## Installation
+## Setup
 
 First and foremost, you must have VLC and libvlc installed on your system and
 the vlc binary must be in your PATH since we doesn't provide yet a cool
@@ -155,10 +155,15 @@ or directly from Ruby code :
 => ":sout=\"#transcode{acodec=aac, ab=128, channels=42}:standard{mux=mp4, dst=rspec.aac}\""
 ```
 
+## Integration
+
+There's a pretty basic but still undocumentated carrierwave integration gem here : https://github.com/elthariel/carrierwave-activevlc
+It doesn't work yet very well with carrierwave-backgrounder, but i think it can be fixed.
+
 ## Development status
 
-This gem is still under active development
-althought it might already be usable for many usages.
+This gem is still under development but it's already in use in one of my production box and is 
+then already usable for many cool things.
 
 If you have any trouble, idea or question, please use GitHub issue
 system. If you have an idea with code attached to it, got to the
