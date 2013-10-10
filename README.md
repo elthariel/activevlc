@@ -142,6 +142,7 @@ Hash.
 Using the command line :
 
     $> bundle exec activevlc pipe exec my_pipe input.mp3 --params=outfile:rspec.aac audio_bitrate:128 audio_channels:42
+    [will produce you]
     :sout="#transcode{acodec=aac, ab=128, channels=42}:standard{mux=mp4, dst=rspec.aac}"
 
 or directly from Ruby code :
