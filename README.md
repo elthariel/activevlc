@@ -49,7 +49,7 @@ you'd have to write
 Not very readable isn't it ? Let's try the same with ActiveVlc :
 
 ```ruby
-AtiveVlc::pipe do
+ActiveVlc::pipe do
   transcode do
     deinterlace
     audio :aac do
